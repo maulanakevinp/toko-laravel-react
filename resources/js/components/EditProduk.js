@@ -10,7 +10,6 @@ class EditProduk extends Component {
             deskripsi   : '',
             harga       : '',
             stok        : '',
-            err         : {}
         };
 
         this.handlerChange = this.handlerChange.bind(this);
@@ -19,6 +18,14 @@ class EditProduk extends Component {
 
     handlerChange(event) {
         this.setState({[event.target.name] : event.target.value});
+
+        const isInvalid = document.querySelector(`#${event.target.id}`);
+        for(let invalid of isInvalid.parentElement.children) {
+            if (invalid.className == "invalid-feedback") {
+                invalid.innerHTML = "";
+            }
+        }
+
         if (event.target.value == "") {
             event.target.classList.add("is-invalid");
         } else {
@@ -42,13 +49,17 @@ class EditProduk extends Component {
                 alert(response.data.message);
             }
         }).catch(error => {
-            let err = {};
+            console.clear();
             const errors = error.response.data.errors;
             for(let key in errors) {
-                document.querySelector(`[name="${key}"]`).classList.add("is-invalid");
-                err[key] = errors[key];
+                const isInvalid = document.querySelector(`[name="${key}"]`);
+                isInvalid.classList.add("is-invalid");
+                for(let invalid of isInvalid.parentElement.children) {
+                    if (invalid.className == "invalid-feedback") {
+                        invalid.innerHTML = errors[key];
+                    }
+                }
             }
-            this.setState({err});
         });
     }
 
@@ -66,7 +77,7 @@ class EditProduk extends Component {
     }
 
     render() {
-        const {nama_produk, deskripsi, harga, stok, err} = this.state;
+        const {nama_produk, deskripsi, harga, stok} = this.state;
         return (
             <div className="container mt-5">
                 <h2>Edit Produk</h2>
@@ -74,22 +85,22 @@ class EditProduk extends Component {
                     <div className="form-group">
                         <label>Nama Produk</label>
                         <input className="form-control" onChange={this.handlerChange} type="text" name="nama_produk" id="nama_produk" value={nama_produk}/>
-                        <span className="invalid-feedback">{err.nama_produk}</span>
+                        <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Deskripsi</label>
                         <input className="form-control" onChange={this.handlerChange} type="text" name="deskripsi" id="deskripsi" value={deskripsi}/>
-                        <span className="invalid-feedback">{err.deskripsi}</span>
+                        <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Harga</label>
                         <input className="form-control" onChange={this.handlerChange} type="number" name="harga" id="harga" value={harga}/>
-                        <span className="invalid-feedback">{err.harga}</span>
+                        <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Stok</label>
                         <input className="form-control" onChange={this.handlerChange} type="number" name="stok" id="stok" value={stok}/>
-                        <span className="invalid-feedback">{err.stok}</span>
+                        <span className="invalid-feedback"></span>
                     </div>
                     <button type="submit" className="btn btn-primary btn-block">Save</button>
                 </form>

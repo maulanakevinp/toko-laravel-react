@@ -9,8 +9,7 @@ class TambahProduk extends Component {
             nama_produk : '',
             deskripsi   : '',
             harga       : '',
-            stok        : '',
-            err         : {}
+            stok        : ''
         };
 
         this.handlerChange = this.handlerChange.bind(this);
@@ -19,6 +18,14 @@ class TambahProduk extends Component {
 
     handlerChange(event) {
         this.setState({[event.target.name] : event.target.value});
+
+        const isInvalid = document.querySelector(`#${event.target.id}`);
+        for(let invalid of isInvalid.parentElement.children) {
+            if (invalid.className == "invalid-feedback") {
+                invalid.innerHTML = "";
+            }
+        }
+
         if (event.target.value == "") {
             event.target.classList.add("is-invalid");
         } else {
@@ -46,18 +53,21 @@ class TambahProduk extends Component {
                 }
             }
         }).catch(error => {
-            let err = {};
+            console.clear();
             const errors = error.response.data.errors;
             for(let key in errors) {
-                document.querySelector(`[name="${key}"]`).classList.add("is-invalid");
-                err[key] = errors[key];
+                const isInvalid = document.querySelector(`[name="${key}"]`);
+                isInvalid.classList.add("is-invalid");
+                for(let invalid of isInvalid.parentElement.children) {
+                    if (invalid.className == "invalid-feedback") {
+                        invalid.innerHTML = errors[key];
+                    }
+                }
             }
-            this.setState({err});
         });
     }
 
     render() {
-        const {err} = this.state;
         return (
             <div className="container mt-5">
                 <h2>Tambah Produk</h2>
@@ -65,22 +75,22 @@ class TambahProduk extends Component {
                     <div className="form-group">
                         <label>Nama Produk</label>
                         <input className="form-control" placeholder="Masukkan Nama Produk ..." onChange={this.handlerChange} type="text" name="nama_produk" id="nama_produk"/>
-                        <span className="invalid-feedback">{err.nama_produk}</span>
+                        <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Deskripsi</label>
                         <input className="form-control" placeholder="Masukkan Deskripsi ..." onChange={this.handlerChange} type="text" name="deskripsi" id="deskripsi"/>
-                        <span className="invalid-feedback">{err.deskripsi}</span>
+                        <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Harga</label>
                         <input className="form-control" placeholder="Masukkan Harga ..." onChange={this.handlerChange} type="number" name="harga" id="harga"/>
-                        <span className="invalid-feedback">{err.harga}</span>
+                        <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Stok</label>
                         <input className="form-control" placeholder="Masukkan Stok ..." onChange={this.handlerChange} type="number" name="stok" id="stok"/>
-                        <span className="invalid-feedback">{err.stok}</span>
+                        <span className="invalid-feedback"></span>
                     </div>
                     <button type="submit" className="btn btn-primary btn-block">Save</button>
                 </form>

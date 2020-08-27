@@ -70937,6 +70937,12 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -70978,8 +70984,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
       nama_produk: '',
       deskripsi: '',
       harga: '',
-      stok: '',
-      err: {}
+      stok: ''
     };
     _this.handlerChange = _this.handlerChange.bind(_assertThisInitialized(_this));
     _this.handlerSubmit = _this.handlerSubmit.bind(_assertThisInitialized(_this));
@@ -70990,6 +70995,24 @@ var EditProduk = /*#__PURE__*/function (_Component) {
     key: "handlerChange",
     value: function handlerChange(event) {
       this.setState(_defineProperty({}, event.target.name, event.target.value));
+      var isInvalid = document.querySelector("#".concat(event.target.id));
+
+      var _iterator = _createForOfIteratorHelper(isInvalid.parentElement.children),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var invalid = _step.value;
+
+          if (invalid.className == "invalid-feedback") {
+            invalid.innerHTML = "";
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
 
       if (event.target.value == "") {
         event.target.classList.add("is-invalid");
@@ -71001,8 +71024,6 @@ var EditProduk = /*#__PURE__*/function (_Component) {
     key: "handlerSubmit",
     value: function () {
       var _handlerSubmit = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-        var _this2 = this;
-
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -71023,17 +71044,30 @@ var EditProduk = /*#__PURE__*/function (_Component) {
                     alert(response.data.message);
                   }
                 })["catch"](function (error) {
-                  var err = {};
+                  console.clear();
                   var errors = error.response.data.errors;
 
                   for (var key in errors) {
-                    document.querySelector("[name=\"".concat(key, "\"]")).classList.add("is-invalid");
-                    err[key] = errors[key];
-                  }
+                    var isInvalid = document.querySelector("[name=\"".concat(key, "\"]"));
+                    isInvalid.classList.add("is-invalid");
 
-                  _this2.setState({
-                    err: err
-                  });
+                    var _iterator2 = _createForOfIteratorHelper(isInvalid.parentElement.children),
+                        _step2;
+
+                    try {
+                      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                        var invalid = _step2.value;
+
+                        if (invalid.className == "invalid-feedback") {
+                          invalid.innerHTML = errors[key];
+                        }
+                      }
+                    } catch (err) {
+                      _iterator2.e(err);
+                    } finally {
+                      _iterator2.f();
+                    }
+                  }
                 });
 
               case 3:
@@ -71054,7 +71088,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
     key: "componentDidMount",
     value: function () {
       var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var _this3 = this;
+        var _this2 = this;
 
         var id;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
@@ -71066,7 +71100,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
                 return fetch("/api/product/" + id).then(function (response) {
                   return response.json();
                 }).then(function (response) {
-                  _this3.setState({
+                  _this2.setState({
                     id: response.id,
                     nama_produk: response.nama_produk,
                     deskripsi: response.deskripsi,
@@ -71098,8 +71132,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
           nama_produk = _this$state.nama_produk,
           deskripsi = _this$state.deskripsi,
           harga = _this$state.harga,
-          stok = _this$state.stok,
-          err = _this$state.err;
+          stok = _this$state.stok;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container mt-5"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Edit Produk"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
@@ -71116,7 +71149,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
         value: nama_produk
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
-      }, err.nama_produk)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Deskripsi"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         className: "form-control",
@@ -71127,7 +71160,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
         value: deskripsi
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
-      }, err.deskripsi)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Harga"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         className: "form-control",
@@ -71138,7 +71171,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
         value: harga
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
-      }, err.harga)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Stok"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         className: "form-control",
@@ -71149,7 +71182,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
         value: stok
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
-      }, err.stok)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         type: "submit",
         className: "btn btn-primary btn-block"
       }, "Save")));
@@ -71240,6 +71273,12 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71280,8 +71319,7 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
       nama_produk: '',
       deskripsi: '',
       harga: '',
-      stok: '',
-      err: {}
+      stok: ''
     };
     _this.handlerChange = _this.handlerChange.bind(_assertThisInitialized(_this));
     _this.handlerSubmit = _this.handlerSubmit.bind(_assertThisInitialized(_this));
@@ -71292,6 +71330,24 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
     key: "handlerChange",
     value: function handlerChange(event) {
       this.setState(_defineProperty({}, event.target.name, event.target.value));
+      var isInvalid = document.querySelector("#".concat(event.target.id));
+
+      var _iterator = _createForOfIteratorHelper(isInvalid.parentElement.children),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var invalid = _step.value;
+
+          if (invalid.className == "invalid-feedback") {
+            invalid.innerHTML = "";
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
 
       if (event.target.value == "") {
         event.target.classList.add("is-invalid");
@@ -71329,17 +71385,30 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
                     }
                   }
                 })["catch"](function (error) {
-                  var err = {};
+                  console.clear();
                   var errors = error.response.data.errors;
 
                   for (var key in errors) {
-                    document.querySelector("[name=\"".concat(key, "\"]")).classList.add("is-invalid");
-                    err[key] = errors[key];
-                  }
+                    var isInvalid = document.querySelector("[name=\"".concat(key, "\"]"));
+                    isInvalid.classList.add("is-invalid");
 
-                  _this2.setState({
-                    err: err
-                  });
+                    var _iterator2 = _createForOfIteratorHelper(isInvalid.parentElement.children),
+                        _step2;
+
+                    try {
+                      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                        var invalid = _step2.value;
+
+                        if (invalid.className == "invalid-feedback") {
+                          invalid.innerHTML = errors[key];
+                        }
+                      }
+                    } catch (err) {
+                      _iterator2.e(err);
+                    } finally {
+                      _iterator2.f();
+                    }
+                  }
                 });
 
               case 3:
@@ -71359,7 +71428,6 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var err = this.state.err;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container mt-5"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Tambah Produk"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
@@ -71376,7 +71444,7 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
         id: "nama_produk"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
-      }, err.nama_produk)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Deskripsi"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         className: "form-control",
@@ -71387,7 +71455,7 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
         id: "deskripsi"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
-      }, err.deskripsi)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Harga"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         className: "form-control",
@@ -71398,7 +71466,7 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
         id: "harga"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
-      }, err.harga)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "form-group"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Stok"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
         className: "form-control",
@@ -71409,7 +71477,7 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
         id: "stok"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
-      }, err.stok)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         type: "submit",
         className: "btn btn-primary btn-block"
       }, "Save")));
