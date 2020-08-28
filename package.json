@@ -25,6 +25,8 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
+        "react-infinite-scroller": "^1.2.4",
+        "react-loading-skeleton": "^2.1.1",
         "react-router-dom": "^5.2.0"
     }
 }
