@@ -24,7 +24,9 @@ function CardProduk({produk, refresh}) {
                 <div className="card-body">
                     <h3>{produk.nama_produk}</h3>
                     <small>{produk.deskripsi}</small>
-                    <p className="">Stok : {produk.stok}</p>
+                    <p className="mt-2">Stok : {produk.stok}</p>
+                </div>
+                <div className="card-footer bg-white border-0">
                     <div className="row">
                         <div className="col-5">
                             <Link to={"/edit-produk/"+produk.id} className="btn btn-sm btn-success" title="Edit">

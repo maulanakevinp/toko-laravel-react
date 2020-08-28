@@ -12,9 +12,21 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::orderBy('id', 'desc')->paginate(9);
+
+        if ($request->cari) {
+            $products = Product::where(function ($products) use ($request) {
+                $products->where('nama_produk','like',"%$request->cari%");
+                $products->orWhere('harga','like',"%$request->cari%");
+                $products->orWhere('stok','like',"%$request->cari%");
+                $products->orWhere('deskripsi','like',"%$request->cari%");
+            })->orderBy('id', 'desc')->paginate(9);
+        }
+
+        $products->appends($request->only('cari'));
+
         return response()->json($products);
     }
 

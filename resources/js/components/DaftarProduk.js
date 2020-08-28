@@ -22,7 +22,6 @@ class DaftarProduk extends Component {
             url: "/api/product?page="+this.state.page,
             method: "get"
         }).then(response => {
-            console.log(response.data);
             if (response.data.next_page_url === null) {
                 this.setState({
                     loadMore: false
@@ -51,7 +50,7 @@ class DaftarProduk extends Component {
                     loader={(
                       <CardProdukSkeleton key={0}/>
                     )}
-                    className="row mt-5 justify-content-center"
+                    className="row justify-content-center"
                 >
                     {renderProduk}
                 </InfiniteScroll>

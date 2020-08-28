@@ -69,17 +69,12 @@ class TambahProduk extends Component {
 
     render() {
         return (
-            <div className="container mt-5">
+            <div className="container">
                 <h2>Tambah Produk</h2>
                 <form className="mt-5" onSubmit={this.handlerSubmit}>
                     <div className="form-group">
                         <label>Nama Produk</label>
                         <input className="form-control" placeholder="Masukkan Nama Produk ..." onChange={this.handlerChange} type="text" name="nama_produk" id="nama_produk"/>
-                        <span className="invalid-feedback"></span>
-                    </div>
-                    <div className="form-group">
-                        <label>Deskripsi</label>
-                        <input className="form-control" placeholder="Masukkan Deskripsi ..." onChange={this.handlerChange} type="text" name="deskripsi" id="deskripsi"/>
                         <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
@@ -90,6 +85,11 @@ class TambahProduk extends Component {
                     <div className="form-group">
                         <label>Stok</label>
                         <input className="form-control" placeholder="Masukkan Stok ..." onChange={this.handlerChange} type="number" name="stok" id="stok"/>
+                        <span className="invalid-feedback"></span>
+                    </div>
+                    <div className="form-group">
+                        <label>Deskripsi</label>
+                        <textarea className="form-control" placeholder="Masukkan Deskripsi ..." onChange={this.handlerChange} name="deskripsi" id="deskripsi"/>
                         <span className="invalid-feedback"></span>
                     </div>
                     <button type="submit" className="btn btn-primary btn-block">Save</button>

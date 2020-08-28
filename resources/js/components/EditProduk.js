@@ -79,17 +79,12 @@ class EditProduk extends Component {
     render() {
         const {nama_produk, deskripsi, harga, stok} = this.state;
         return (
-            <div className="container mt-5">
+            <div className="container">
                 <h2>Edit Produk</h2>
                 <form className="mt-5" onSubmit={this.handlerSubmit}>
                     <div className="form-group">
                         <label>Nama Produk</label>
                         <input className="form-control" onChange={this.handlerChange} type="text" name="nama_produk" id="nama_produk" value={nama_produk}/>
-                        <span className="invalid-feedback"></span>
-                    </div>
-                    <div className="form-group">
-                        <label>Deskripsi</label>
-                        <input className="form-control" onChange={this.handlerChange} type="text" name="deskripsi" id="deskripsi" value={deskripsi}/>
                         <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
@@ -100,6 +95,11 @@ class EditProduk extends Component {
                     <div className="form-group">
                         <label>Stok</label>
                         <input className="form-control" onChange={this.handlerChange} type="number" name="stok" id="stok" value={stok}/>
+                        <span className="invalid-feedback"></span>
+                    </div>
+                    <div className="form-group">
+                        <label>Deskripsi</label>
+                        <textarea className="form-control" onChange={this.handlerChange} type="text" name="deskripsi" id="deskripsi" value={deskripsi}/>
                         <span className="invalid-feedback"></span>
                     </div>
                     <button type="submit" className="btn btn-primary btn-block">Save</button>

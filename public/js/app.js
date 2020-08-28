@@ -73358,8 +73358,10 @@ function CardProduk(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card-body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, produk.nama_produk), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("small", null, produk.deskripsi), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
-    className: ""
-  }, "Stok : ", produk.stok), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "mt-2"
+  }, "Stok : ", produk.stok)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "card-footer bg-white border-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-5"
@@ -73566,8 +73568,6 @@ var DaftarProduk = /*#__PURE__*/function (_Component) {
                   url: "/api/product?page=" + this.state.page,
                   method: "get"
                 }).then(function (response) {
-                  console.log(response.data);
-
                   if (response.data.next_page_url === null) {
                     _this2.setState({
                       loadMore: false
@@ -73617,7 +73617,7 @@ var DaftarProduk = /*#__PURE__*/function (_Component) {
         loader: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_CardProdukSkeleton__WEBPACK_IMPORTED_MODULE_4__["default"], {
           key: 0
         }),
-        className: "row mt-5 justify-content-center"
+        className: "row justify-content-center"
       }, renderProduk));
     }
   }]);
@@ -73849,7 +73849,7 @@ var EditProduk = /*#__PURE__*/function (_Component) {
           harga = _this$state.harga,
           stok = _this$state.stok;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "container mt-5"
+        className: "container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Edit Produk"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
         className: "mt-5",
         onSubmit: this.handlerSubmit
@@ -73862,17 +73862,6 @@ var EditProduk = /*#__PURE__*/function (_Component) {
         name: "nama_produk",
         id: "nama_produk",
         value: nama_produk
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-        className: "invalid-feedback"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "form-group"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Deskripsi"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        className: "form-control",
-        onChange: this.handlerChange,
-        type: "text",
-        name: "deskripsi",
-        id: "deskripsi",
-        value: deskripsi
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -73895,6 +73884,17 @@ var EditProduk = /*#__PURE__*/function (_Component) {
         name: "stok",
         id: "stok",
         value: stok
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "invalid-feedback"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Deskripsi"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
+        className: "form-control",
+        onChange: this.handlerChange,
+        type: "text",
+        name: "deskripsi",
+        id: "deskripsi",
+        value: deskripsi
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
@@ -73928,7 +73928,9 @@ __webpack_require__.r(__webpack_exports__);
 
 function Header() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
-    className: "navbar navbar-expand-lg navbar-dark bg-dark"
+    className: "navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/",
     className: "navbar-brand mb-0 font-weight-bold"
@@ -73958,7 +73960,7 @@ function Header() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["NavLink"], {
     to: "/tambah-produk",
     className: "nav-link"
-  }, "Tambah Produk")))));
+  }, "Tambah Produk"))))));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Header);
@@ -74144,7 +74146,7 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "container mt-5"
+        className: "container"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Tambah Produk"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
         className: "mt-5",
         onSubmit: this.handlerSubmit
@@ -74157,17 +74159,6 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
         type: "text",
         name: "nama_produk",
         id: "nama_produk"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-        className: "invalid-feedback"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "form-group"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Deskripsi"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-        className: "form-control",
-        placeholder: "Masukkan Deskripsi ...",
-        onChange: this.handlerChange,
-        type: "text",
-        name: "deskripsi",
-        id: "deskripsi"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -74190,6 +74181,16 @@ var TambahProduk = /*#__PURE__*/function (_Component) {
         type: "number",
         name: "stok",
         id: "stok"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "invalid-feedback"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Deskripsi"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
+        className: "form-control",
+        placeholder: "Masukkan Deskripsi ...",
+        onChange: this.handlerChange,
+        name: "deskripsi",
+        id: "deskripsi"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "invalid-feedback"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
