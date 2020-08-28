@@ -73547,13 +73547,34 @@ var DaftarProduk = /*#__PURE__*/function (_Component) {
     _this.state = {
       page: 1,
       produk: [],
-      loadMore: true
+      loadMore: true,
+      cari: ''
     };
     _this.componentDidMount = _this.componentDidMount.bind(_assertThisInitialized(_this));
+    _this.handlerChange = _this.handlerChange.bind(_assertThisInitialized(_this));
+    _this.handlerSubmit = _this.handlerSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(DaftarProduk, [{
+    key: "handlerChange",
+    value: function handlerChange(event) {
+      this.setState({
+        cari: event.target.value,
+        page: 1
+      });
+    }
+  }, {
+    key: "handlerSubmit",
+    value: function handlerSubmit(event) {
+      event.preventDefault();
+      this.setState({
+        produk: [],
+        loadMore: true
+      });
+      this.componentDidMount();
+    }
+  }, {
     key: "componentDidMount",
     value: function () {
       var _componentDidMount = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
@@ -73565,17 +73586,21 @@ var DaftarProduk = /*#__PURE__*/function (_Component) {
               case 0:
                 _context.next = 2;
                 return axios__WEBPACK_IMPORTED_MODULE_5___default()({
-                  url: "/api/product?page=" + this.state.page,
+                  url: "/api/product?cari=".concat(this.state.cari, "&page=").concat(this.state.page),
                   method: "get"
                 }).then(function (response) {
                   if (response.data.next_page_url === null) {
                     _this2.setState({
                       loadMore: false
                     });
+                  } else {
+                    _this2.setState({
+                      page: _this2.state.page + 1,
+                      loadMore: true
+                    });
                   }
 
                   _this2.setState({
-                    page: _this2.state.page + 1,
                     produk: [].concat(_toConsumableArray(_this2.state.produk), _toConsumableArray(response.data.data))
                   });
                 })["catch"](function (error) {
@@ -73610,7 +73635,35 @@ var DaftarProduk = /*#__PURE__*/function (_Component) {
       });
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_infinite_scroller__WEBPACK_IMPORTED_MODULE_3___default.a, {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+        onSubmit: this.handlerSubmit,
+        method: "get"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "input-group mb-3"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "text",
+        className: "form-control",
+        placeholder: "Cari sesuatu ...",
+        onChange: this.handlerChange
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "input-group-append"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        type: "submit",
+        className: "btn btn-outline-secondary"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("svg", {
+        width: "1em",
+        height: "1em",
+        viewBox: "0 0 16 16",
+        className: "bi bi-search",
+        fill: "currentColor",
+        xmlns: "http://www.w3.org/2000/svg"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
+        fillRule: "evenodd",
+        d: "M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("path", {
+        fillRule: "evenodd",
+        d: "M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"
+      })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_infinite_scroller__WEBPACK_IMPORTED_MODULE_3___default.a, {
         initialLoad: false,
         loadMore: this.componentDidMount,
         hasMore: this.state.loadMore,
