@@ -18,6 +18,7 @@ class DaftarProduk extends Component {
         this.componentDidMount  = this.componentDidMount.bind(this);
         this.handlerChange  = this.handlerChange.bind(this);
         this.handlerSubmit  = this.handlerSubmit.bind(this);
+        this.refresh  = this.refresh.bind(this);
     }
 
     handlerChange(event){
@@ -38,10 +39,24 @@ class DaftarProduk extends Component {
         this.componentDidMount();
     }
 
+    refresh(){
+        this.setState({
+            produk  : [],
+            loadMore: true,
+        });
+
+        this.componentDidMount();
+    }
+
     async componentDidMount(){
         await Axios({
             url: `/api/product?cari=${this.state.cari}&page=${this.state.page}`,
-            method: "get"
+            method: "get",
+            headers : {
+                "Content-type"  : "application/json",
+                Accept          : "application/json",
+                Authorization   : "Bearer " + localStorage.getItem('token')
+            },
         }).then(response => {
             if (response.data.next_page_url === null) {
                 this.setState({
@@ -63,7 +78,7 @@ class DaftarProduk extends Component {
 
     render() {
         const renderProduk = this.state.produk.map(produk => {
-            return <CardProduk produk={produk} key={produk.id} refresh={this.componentDidMount} />;
+            return <CardProduk produk={produk} key={produk.id} refresh={this.refresh} />;
         });
 
         return (

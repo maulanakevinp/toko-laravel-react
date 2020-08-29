@@ -18,17 +18,17 @@ class LoginController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email'     => ['required', 'email'],
+            'password'  => ['required'],
         ]);
 
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response([
+            return response()->json([
                 'success'   => false,
-                'message' => [__('auth.failed')]
-            ], 404);
+                'message'   => [__('auth.failed')]
+            ]);
         }
 
         $token = $user->createToken('ApiToken')->plainTextToken;
@@ -47,9 +47,9 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
+        $request->user()->currentAccessToken()->delete();
         return response()->json([
             'success'    => true
         ], 200);

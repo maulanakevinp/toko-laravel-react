@@ -19,6 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  });
 
 Route::post('/login', 'LoginController@index');
-Route::get('/logout', 'LoginController@logout');
-
-Route::resource('product', 'ProductController')->except('create','edit');
+Route::middleware('auth:sanctum')->get('/logout', 'LoginController@logout');
+Route::middleware('auth:sanctum')->resource('product', 'ProductController')->except('create','edit');

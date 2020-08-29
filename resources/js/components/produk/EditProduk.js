@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 
-class TambahProduk extends Component {
-
+class EditProduk extends Component {
     constructor(props){
         super(props);
         this.state = {
+            id          : '',
             nama_produk : '',
             deskripsi   : '',
             harga       : '',
-            stok        : ''
+            stok        : '',
         };
 
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.handlerChange = this.handlerChange.bind(this);
         this.handlerSubmit = this.handlerSubmit.bind(this);
     }
@@ -36,21 +37,18 @@ class TambahProduk extends Component {
     async handlerSubmit(event) {
         event.preventDefault();
         await Axios({
-            url: "/api/product",
-            method: "POST",
+            url: "/api/product/" + this.state.id,
+            method: "put",
             data: this.state,
             headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json'
+                Accept: 'application/json',
+                Authorization   : "Bearer " + localStorage.getItem('token')
             },
             responseType:'json'
         }).then(response => {
             if (response.data.success) {
-                if (confirm(response.data.message + ". Apakah anda ingin menambahkan produk lagi ?")) {
-                    document.querySelector("form").reset();
-                } else {
-                    this.props.history.push('/');
-                }
+                alert(response.data.message);
             }
         }).catch(error => {
             console.clear();
@@ -67,36 +65,57 @@ class TambahProduk extends Component {
         });
     }
 
+    async componentDidMount () {
+        await Axios({
+            url     : "/api/product/" + this.props.match.params.id,
+            method  : "get",
+            headers: {
+                "Content-Type"  : "application/json",
+                Accept          : "application/json",
+                Authorization   : "Bearer " + localStorage.getItem("token"),
+            }
+        }).then(response => {
+            this.setState({
+                id          : response.data.id,
+                nama_produk : response.data.nama_produk,
+                deskripsi   : response.data.deskripsi,
+                harga       : response.data.harga,
+                stok        : response.data.stok,
+            });
+        }).catch(error => alert("ERROR : "+error));
+    }
+
     render() {
+        const {nama_produk, deskripsi, harga, stok} = this.state;
         return (
             <div className="container">
-                <h2>Tambah Produk</h2>
+                <h2>Edit Produk</h2>
                 <form className="mt-5" onSubmit={this.handlerSubmit}>
                     <div className="form-group">
                         <label>Nama Produk</label>
-                        <input className="form-control" placeholder="Masukkan Nama Produk ..." onChange={this.handlerChange} type="text" name="nama_produk" id="nama_produk"/>
+                        <input className="form-control" onChange={this.handlerChange} type="text" name="nama_produk" id="nama_produk" value={nama_produk}/>
                         <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Harga</label>
-                        <input className="form-control" placeholder="Masukkan Harga ..." onChange={this.handlerChange} type="number" name="harga" id="harga"/>
+                        <input className="form-control" onChange={this.handlerChange} type="number" name="harga" id="harga" value={harga}/>
                         <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Stok</label>
-                        <input className="form-control" placeholder="Masukkan Stok ..." onChange={this.handlerChange} type="number" name="stok" id="stok"/>
+                        <input className="form-control" onChange={this.handlerChange} type="number" name="stok" id="stok" value={stok}/>
                         <span className="invalid-feedback"></span>
                     </div>
                     <div className="form-group">
                         <label>Deskripsi</label>
-                        <textarea className="form-control" placeholder="Masukkan Deskripsi ..." onChange={this.handlerChange} name="deskripsi" id="deskripsi"/>
+                        <textarea className="form-control" onChange={this.handlerChange} type="text" name="deskripsi" id="deskripsi" value={deskripsi}/>
                         <span className="invalid-feedback"></span>
                     </div>
                     <button type="submit" className="btn btn-primary btn-block">Save</button>
                 </form>
             </div>
-        );
+        )
     }
 }
 
-export default TambahProduk;
+export default EditProduk;
