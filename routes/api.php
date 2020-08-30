@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+ });
 
-Route::resource('product', 'ProductController')->except('create','edit');
+Route::post('/login', 'LoginController@index');
+Route::middleware('auth:sanctum')->get('/logout', 'LoginController@logout');
+Route::middleware('auth:sanctum')->resource('product', 'ProductController')->except('create','edit');

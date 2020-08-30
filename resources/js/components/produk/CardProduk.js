@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import Axios from 'axios';
 
 function CardProduk({produk, refresh}) {
     const formatter = new Intl.NumberFormat('id-ID', {
@@ -9,12 +10,19 @@ function CardProduk({produk, refresh}) {
 
     async function deleteProduk(){
         if (confirm("Apakah anda yakin ingin menghapus produk " + produk.nama_produk + " ini???")) {
-            await fetch("/api/product/" + produk.id, {
-                method: 'delete'
-            }).then(response => response.json())
-            .then(response => {
-                return refresh();
-            })
+            await Axios({
+                url: "/api/product/" + produk.id,
+                method: 'delete',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization   : "Bearer " + localStorage.getItem('token')
+                },
+            }).then((response) => {
+                if (response.data.success) {
+                    return refresh();
+                }
+            });
         }
     }
 
