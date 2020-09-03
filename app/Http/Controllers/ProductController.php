@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProductEvent;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -47,6 +48,8 @@ class ProductController extends Controller
 
         $product = Product::create($data);
 
+        event(new ProductEvent("Berhasil memperbarui produk"));
+
         return response()->json([
             'success'   => true,
             'message'   => 'Produk berhasil ditambahkan',
@@ -83,6 +86,8 @@ class ProductController extends Controller
 
         $product->update($data);
 
+        event(new ProductEvent("Berhasil memperbarui produk"));
+
         return response()->json([
             'success'   => true,
             'message'   => 'Produk berhasil diperbarui',
@@ -99,6 +104,9 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+
+        event(new ProductEvent("Berhasil menghapus produk"));
+
         return response()->json([
             'success'   => true,
             'message'   => 'Produk berhasil dihapus',

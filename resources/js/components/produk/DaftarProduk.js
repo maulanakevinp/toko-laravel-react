@@ -16,9 +16,9 @@ class DaftarProduk extends Component {
         };
 
         this.componentDidMount  = this.componentDidMount.bind(this);
-        this.handlerChange  = this.handlerChange.bind(this);
-        this.handlerSubmit  = this.handlerSubmit.bind(this);
-        this.refresh  = this.refresh.bind(this);
+        this.handlerChange      = this.handlerChange.bind(this);
+        this.handlerSubmit      = this.handlerSubmit.bind(this);
+        this.refresh            = this.refresh.bind(this);
     }
 
     handlerChange(event){
@@ -41,8 +41,10 @@ class DaftarProduk extends Component {
 
     refresh(){
         this.setState({
+            page    : 1,
             produk  : [],
             loadMore: true,
+            cari    : ''
         });
 
         this.componentDidMount();
@@ -77,6 +79,11 @@ class DaftarProduk extends Component {
     }
 
     render() {
+
+        echo.channel('toko').listen('.produk', () => {
+            location.reload();
+        });
+
         const renderProduk = this.state.produk.map(produk => {
             return <CardProduk produk={produk} key={produk.id} refresh={this.refresh} />;
         });
